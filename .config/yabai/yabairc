@@ -1,0 +1,173 @@
+#!/usr/bin/env zsh
+
+# necessary to load scripting-addition during startup on macOS Big Sur
+# *yabai --load-sa* is configured to run through sudo without a password
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+# Включает/отключает внешнюю панель. Параметры: <состояние>:<высота>:<отступ сверху>.
+yabai -m config external_bar off:45:0
+# Следовать за текущим фокусом мыши (off - выключено, on - включено).
+yabai -m config mouse_follows_focus off
+# Следовать за движением мыши (autoraise - поднять окно под указателем, off - отключено).
+yabai -m config focus_follows_mouse off
+# Расположение нового окна. Параметры: first_child или second_child.
+yabai -m config window_placement second_child
+# Включить режим "всегда поверх" для окон.
+#yabai -m config window_topmost on
+# Включить или отключить тени окон.
+yabai -m config window_shadow off
+# Включить/отключить прозрачность окон.
+yabai -m config window_opacity off
+# Включить или отключить границы окон.
+#yabai -m config window_border on
+## Толщина границы окна в пикселях.
+#yabai -m config window_border_width 6
+## Цвет границы активного окна в формате ARGB.
+#yabai -m config active_window_border_color 0xff775759
+## Цвет границы неактивного окна в формате ARGB.
+#yabai -m config normal_window_border_color 0xff555555
+## Цвет обратной связи при вставке нового окна.
+#yabai -m config insert_feedback_color 0xaad75f5f
+# Отношение разделения окон при добавлении нового (0.5 — 50%).
+yabai -m config split_ratio 0.50
+# Автоматическое балансирование размеров окон.
+yabai -m config auto_balance on
+# Модификатор для управления окнами с помощью мыши.
+yabai -m config mouse_modifier fn
+# Действие для левого клика мышью при удержании модификатора. move - перемещение.
+yabai -m config mouse_action1 move
+# Действие для правого клика мышью при удержании модификатора. resize - изменение размера.
+yabai -m config mouse_action2 resize
+# Действие при "сбрасывании" окна мышью. swap - обмен окнами.
+yabai -m config mouse_drop_action swap
+
+
+# Тип раскладки окон для рабочего пространства: bsp (плиточная), stack (стековая), float (плавающая).
+yabai -m config layout                       bsp
+
+# Отступы вокруг окон (верхний, нижний, левый и правый).
+yabai -m config top_padding                  14
+yabai -m config bottom_padding               12 
+yabai -m config left_padding                 12
+yabai -m config right_padding                12
+
+# Расстояние между окнами.
+yabai -m config window_gap                   10
+
+# mission-control desktop labels
+# Удаление всех существующих рабочих пространств.
+yabai -m query --spaces | jq -re 'map(.index) | reverse | .[] ' | xargs -I % sh -c 'yabai -m space % --destroy'
+
+# Создание рабочих пространств и назначение им меток (labels).
+yabai -m space 1 --label main
+
+yabai -m space --create
+yabai -m space 2 --label term
+
+yabai -m space --create
+yabai -m space 3 --label telegram
+
+yabai -m space --create
+yabai -m space 4 --label ChatGPT
+
+yabai -m space --create
+yabai -m space 5 --label code
+
+yabai -m space --create
+yabai -m space 6 --label web
+
+yabai -m space --create
+yabai -m space 7 --label rdp
+
+yabai -m space --create
+yabai -m space 8 --label mail
+
+yabai -m space --create
+yabai -m space 9 --label notes
+
+yabai -m space --create
+yabai -m space 10 --label misc
+
+# Установка стековой раскладки для рабочего пространства main.
+#yabai -m config --space main layout stack
+
+# Применение правил для окон, например, назначение рабочего пространства.
+yabai -m rule --add app=".*" space=main
+#yabai -m signal --add event=window_created app=".*" \
+  #action="sleep 0.1 && yabai -m space --focus main"
+yabai -m rule --add app="^(WezTerm|Warp)$" space=term
+yabai -m signal --add event=window_created app="^(WezTerm|Warp)$" \
+  action="sleep 0.1 && yabai -m space --focus term"
+yabai -m rule --add app="^(Xcode|Code|Sublime Text)$" space=code
+yabai -m signal --add event=window_created app="^(Xcode|Code|Sublime Text)$" \
+  action="sleep 0.1 && yabai -m space --focus code"
+yabai -m rule --add app="^(Mail|Spark)$" space=mail
+yabai -m signal --add event=window_created app="^(Mail|Spark)$" \
+  action="sleep 0.1 && yabai -m space --focus mail"
+yabai -m rule --add app="^(Safari|Yandex|.*Chrome.*|Arc|.*Firefox.*)$" space=web
+yabai -m signal --add event=window_created app="^(Safari|Yandex|.*Chrome.*|Arc|.*Firefox.*)$" \
+  action="sleep 0.1 && yabai -m space --focus web"
+yabai -m rule --add app="^Windows App$" space=rdp
+yabai -m signal --add event=window_created app="^Windows App$" \
+  action="sleep 0.1 && yabai -m space --focus rdp"
+yabai -m rule --add app="^(Заметки|Obsidian)$" space=notes
+yabai -m signal --add event=window_created app="^(Заметки|Obsidian)$" \
+  action="sleep 0.1 && yabai -m space --focus notes"
+yabai -m rule --add app="^ChatGPT$" space=ChatGPT #grid=1:1:0:0:1:1 #manage=off
+yabai -m signal --add event=window_created app="^ChatGPT$" \
+  action="sleep 0.1 && yabai -m space --focus ChatGPT"
+yabai -m rule --add app="^Telegram*" space=telegram #grid=1:1:0:0:1:1 #manage=off
+yabai -m signal --add event=window_created app="^Telegram*" \
+    action="sleep 0.1 && yabai -m space --focus telegram"
+yabai -m rule --add app="^(Битрикс24 Мессенджер|Телефон)$" space=misc
+yabai -m signal --add event=window_created app="^(Битрикс24 Мессенджер|Телефон)$" \
+    action="sleep 0.1 && yabai -m space --focus misc"
+
+yabai -m signal --add event=window_created app="^(Finder|Сообщения|Просмотр|Системные настройки|App Store)$" \
+  action="sleep 0.1 && yabai -m space --focus main"
+
+yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
+yabai -m rule --add label="macfeh" app="^macfeh$" manage=off
+yabai -m rule --add label="System Settings" app="^Системные настройки$" title=".*" manage=off
+yabai -m rule --add label="App Store" app="^App Store$" manage=off
+yabai -m rule --add label="Activity Monitor" app="^Activity Monitor$" manage=off
+yabai -m rule --add label="Calculator" app="^Calculator$" manage=off
+yabai -m rule --add label="Dictionary" app="^Dictionary$" manage=off
+yabai -m rule --add label="Software Update" title="Software Update" manage=off
+yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+yabai -m rule --add label="1Password" app="^1Password$" manage=off
+yabai -m rule --add label="Around" app="^Around$" manage=off
+yabai -m rule --add label="NotificationCenter" app="^NotificationCenter$" manage=off
+
+yabai -m rule --add app="^(TextInputMenuAgent|PAH_Extension|PressAndHold|TextInputSwitcher|GPUToolsCompatService|mdworker_shared)$" title=".*" manage=off
+yabai -m rule --add app=".*Helper.*" title=".*" manage=off
+
+# Раскладка float для пространства main
+yabai -m config --space main layout float
+yabai -m config --space code layout float 
+yabai -m config --space rdp layout stack 
+
+#yabai -m rule --add app="^PAH_Extension$" manage=off
+#yabai -m rule --add app="^(PAH_Extension|TextInputSwitcher)$" manage=off
+# Действия при закрытии окна: фокус на другое окно или мышь.
+yabai -m signal --add event=window_destroyed active=yes action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
+
+# Действия при завершении приложения: фокус на другое окно.
+yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+
+# Настройка внешней панели (all:28:0 — высота 28, без отступов).
+yabai -m config external_bar all:28:0
+
+# Подписка на события
+yabai -m signal --add event=window_created action="bash ~/.config/sketchybar/plugins/spaces_visibility.sh"
+yabai -m signal --add event=window_destroyed action="bash ~/.config/sketchybar/plugins/spaces_visibility.sh"
+yabai -m signal --add event=space_changed action="bash ~/.config/sketchybar/plugins/spaces_visibility.sh"
+# при необходимости можно подписаться и на app_launched, app_terminated и т.д.
+
+yabai -m signal --add event=window_focused action="bash ~/.config/sketchybar/plugins/float_fix.sh"
+
+#osascript -e 'tell application id "tracesOf.Uebersicht" to refresh'
+hs -c "stackline.config:toggle('appearance.showIcons')"
+echo "yabai configuration loaded.."
