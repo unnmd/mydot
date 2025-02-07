@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#options=(
+	#style=round
+	#width=2.0
+	#hidpi=off
+	#active_color=0xffe2e2e3
+	#inactive_color=0xff414550
+#)
+
+options=(
+    style=flat
+    width=5.0
+    hidpi=off
+	#active_color=0xffe2e2e3
+	#inactive_color=0xff414550
+    active_color=0x88a0a0a5  # Мягкий полупрозрачный серый
+    inactive_color=0x00000000  # Без границы для неактивных окон
+)
+
+
+borders "${options[@]}"
