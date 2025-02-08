@@ -19,9 +19,11 @@ do
     padding_left=2
     padding_right=2
     label.padding_right=20
-    icon.highlight_color=$RED
-    label.color=$GREY
-    label.highlight_color=$WHITE
+    #icon.highlight_color=$RED
+    icon.highlight_color=0xFFEBDBB2
+    #label.color=$GREY
+    #label.highlight_color=$WHITE
+    label.highlight_color=0xFFEBDBB2
     label.font="sketchybar-app-font:Regular:12.0"
     label.y_offset=-1
     background.color=$BACKGROUND_1

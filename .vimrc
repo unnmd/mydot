@@ -239,8 +239,8 @@ let &t_TE = ""
 let g:onedark_terminal_italics = 1
 let g:gruvbox_italic = 1
 " Темы 
-"colo gruvbox
-colo onedark
+colo gruvbox
+"colo onedark
 "colo catppuccin-frappe
 set termguicolors
 set bg=dark

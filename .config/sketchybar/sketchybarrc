@@ -21,7 +21,8 @@ launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /
 # Setting up the general bar appearance of the bar
 bar=(
   height=45
-  color=$BAR_COLOR
+  #color=$BAR_COLOR
+  color=0xFF282828
   border_width=2
   border_color=$BAR_BORDER_COLOR
   shadow=off
@@ -42,11 +43,13 @@ sketchybar --bar "${bar[@]}"
 defaults=(
   updates=when_shown
   icon.font="$FONT:Bold:10.0"
-  icon.color=$ICON_COLOR
+  #icon.color=$ICON_COLOR
+  icon.color=0xFFFE8019
   icon.padding_left=$PADDINGS
   icon.padding_right=$PADDINGS
   label.font="$FONT:Semibold:14.0"
-  label.color=$LABEL_COLOR
+  #label.color=$LABEL_COLOR
+  label.color=0xFFEBDBB2
   label.padding_left=$PADDINGS
   label.padding_right=$PADDINGS
   padding_right=$PADDINGS
