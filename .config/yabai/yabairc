@@ -166,7 +166,13 @@ yabai -m signal --add event=window_destroyed action="bash ~/.config/sketchybar/p
 yabai -m signal --add event=space_changed action="bash ~/.config/sketchybar/plugins/spaces_visibility.sh"
 # при необходимости можно подписаться и на app_launched, app_terminated и т.д.
 
+#
 yabai -m signal --add event=window_focused action="bash ~/.config/sketchybar/plugins/float_fix.sh"
+
+# Анимация окон
+yabai -m config \
+  window_animation_duration 0.14 \
+  window_animation_easing ease_out_sine
 
 #osascript -e 'tell application id "tracesOf.Uebersicht" to refresh'
 hs -c "stackline.config:toggle('appearance.showIcons')"
