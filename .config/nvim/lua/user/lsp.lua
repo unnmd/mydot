@@ -23,14 +23,14 @@ lvim.plugins = {
   "leoluz/nvim-dap-go",
     
   -- Другие плагины
-  "nvim-neotest/nvim-nio",  -- Запятая добавлена
+  "nvim-neotest/nvim-nio",
 
    {
    "tzachar/cmp-tabnine",
    event = "BufRead",
    build = "./install.sh",
    },
-   --"github/copilot.vim",
+   "github/copilot.vim",
 
     {
         "yetone/avante.nvim",
